@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About - Amazon Review Sentiment Analysis</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            color: #333; 
+            text-align: center; 
+        }
+        h2 {
+            color: #555;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        p, li {
+            line-height: 1.6;
+            color: #666;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        a { 
+            color: #007bff; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+        a:hover { 
+            text-decoration: underline; 
+        }
+        .back-button {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .back-button a {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .back-button a:hover {
+            background: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About This Project</h1>
+        
+        <h2>Project Overview</h2>
+        <p>This is an AI-powered sentiment analysis system designed to analyze Amazon product reviews and classify them as positive, negative, or neutral. The project demonstrates end-to-end machine learning development, from data preprocessing to model deployment.</p>
+        
+        <h2>Technology Stack</h2>
+        <ul>
+            <li><strong>Python:</strong> Core programming language</li>
+            <li><strong>Flask:</strong> Web framework for the user interface</li>
+            <li><strong>Scikit-learn:</strong> Machine learning library</li>
+            <li><strong>NLTK:</strong> Natural language processing</li>
+            <li><strong>AI APIs:</strong> OpenAI, Anthropic Claude, Google Gemini</li>
+        </ul>
+        
+        <h2>How It Works</h2>
+        <p>The system processes text reviews through several steps:</p>
+        <ul>
+            <li>Text preprocessing (cleaning, tokenization, lemmatization)</li>
+            <li>Feature extraction using TF-IDF vectorization</li>
+            <li>Sentiment prediction using trained ML models or AI APIs</li>
+            <li>Confidence scoring for prediction reliability</li>
+        </ul>
+        
+        <div class="back-button">
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
