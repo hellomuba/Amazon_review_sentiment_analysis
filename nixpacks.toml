@@ -1,0 +1,8 @@
+[phases.setup]
+nixpkgsArchive = "23.05"  # Stable pin for reproducibility
+
+[phases.build]
+nixPackages = ["gfortran"]
+
+[start]
+cmd = "python app.py"
