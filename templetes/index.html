@@ -1,288 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon Review Sentiment Analysis</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #333;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            flex: 1;
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        h1 { 
+            color: #333; 
+            text-align: center; 
             margin-bottom: 30px;
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            box-sizing: border-box;
         }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+        button { 
+            background: #007bff; 
+            color: white; 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
             font-size: 16px;
-            resize: vertical;
-            min-height: 120px;
-            transition: border-color 0.3s ease;
+            width: 48%;
+            margin: 5px 1%;
+            display: inline-block;
         }
-
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        button:hover { 
+            background: #0056b3; 
         }
-
-        .model-selection {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+        .btn-compare {
+            background: #28a745;
         }
-
-        .model-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .btn-compare:hover {
+            background: #1e7e34;
         }
-
-        .model-option:hover {
-            border-color: #667eea;
+        .models { 
+            margin: 20px 0; 
+            padding: 20px;
             background: #f8f9fa;
+            border-radius: 5px;
         }
-
-        .model-option.selected {
-            border-color: #667eea;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+        .model-option { 
+            margin: 10px 0; 
+            padding: 10px;
         }
-
-        .model-option input[type="radio"] {
+        .model-option input {
             margin-right: 10px;
         }
-
-        .model-info {
-            flex: 1;
-        }
-
-        .model-info h4 {
-            margin-bottom: 5px;
-        }
-
-        .model-info p {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            border-radius: 8px;
+        .model-option label {
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            margin-bottom: 10px;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            margin-bottom: 10px;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
         .examples {
-            margin-top: 30px;
-        }
-
-        .examples h3 {
-            color: #555;
-            margin-bottom: 15px;
-        }
-
-        .example-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #667eea;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .example-item:hover {
-            background: #e9ecef;
-        }
-
-        .example-item p {
-            margin: 0;
-            font-style: italic;
-            color: #666;
-        }
-
-        .footer {
-            text-align: center;
-            color: white;
+            margin-top: 20px;
             padding: 20px;
-            opacity: 0.8;
+            background: #e9ecef;
+            border-radius: 5px;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .model-selection {
-                grid-template-columns: 1fr;
-            }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            border-left: 4px solid #007bff;
+        }
+        .example:hover {
+            background: #f0f0f0;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🛍️ Amazon Review Sentiment Analysis</h1>
-            <p>Analyze sentiment using AI models: ML, OpenAI, Claude, and Gemini</p>
-        </div>
-
-        <div class="card">
-            <form action="/predict" method="POST">
-                <div class="form-group">
-                    <label for="review_text">Enter your Amazon product review:</label>
-                    <textarea 
-                        id="review_text" 
-                        name="review_text" 
-                        placeholder="Type your review here... For example: 'This product is amazing! Great quality and fast shipping.'"
-                        required
-                    ></textarea>
+        <h1>Amazon Review Sentiment Analysis</h1>
+        <form id="analysisForm" action="/predict" method="POST">
+            <div>
+                <label for="review_text">Enter your Amazon product review:</label>
+                <textarea id="review_text" name="review_text" placeholder="Enter your Amazon product review here..." required></textarea>
+            </div>
+            
+            <div class="models">
+                <h3>Choose AI Model:</h3>
+                <div class="model-option">
+                    <input type="radio" id="ml_model" name="ai_model" value="ml_model" checked>
+                    <label for="ml_model">🤖 ML Model (Trained Random Forest/Logistic Regression)</label>
                 </div>
-
-                <div class="form-group">
-                    <label>Choose AI Model:</label>
-                    <div class="model-selection">
-                        <div class="model-option selected" onclick="selectModel('ml_model')">
-                            <input type="radio" id="ml_model" name="ai_model" value="ml_model" checked>
-                            <div class="model-info">
-                                <h4>🤖 ML Model</h4>
-                                <p>Trained Random Forest/Logistic Regression</p>
-                            </div>
-                        </div>
-                        <div class="model-option" onclick="selectModel('openai')">
-                            <input type="radio" id="openai" name="ai_model" value="openai">
-                            <div class="model-info">
-                                <h4>🔥 OpenAI GPT</h4>
-                                <p>GPT-3.5 Turbo for sentiment analysis</p>
-                            </div>
-                        </div>
-                        <div class="model-option" onclick="selectModel('claude')">
-                            <input type="radio" id="claude" name="ai_model" value="claude">
-                            <div class="model-info">
-                                <h4>🧠 Claude</h4>
-                                <p>Anthropic's Claude 3 Sonnet</p>
-                            </div>
-                        </div>
-                        <div class="model-option" onclick="selectModel('gemini')">
-                            <input type="radio" id="gemini" name="ai_model" value="gemini">
-                            <div class="model-info">
-                                <h4>💎 Gemini</h4>
-                                <p>Google's Gemini Pro model</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="model-option">
+                    <input type="radio" id="openai" name="ai_model" value="openai">
+                    <label for="openai">🔥 OpenAI GPT-3.5</label>
                 </div>
-
-                <button type="submit" class="btn">Analyze Sentiment</button>
-            </form>
-
-            <div class="examples">
-                <h3>💡 Try these examples:</h3>
-                
-                <div class="example-item" onclick="setExample('This product exceeded my expectations! The quality is outstanding and delivery was super fast. Highly recommend!')">
-                    <p><strong>Positive:</strong> "This product exceeded my expectations! The quality is outstanding and delivery was super fast. Highly recommend!"</p>
+                <div class="model-option">
+                    <input type="radio" id="claude" name="ai_model" value="claude">
+                    <label for="claude">🧠 Anthropic Claude</label>
                 </div>
-                
-                <div class="example-item" onclick="setExample('Terrible quality, nothing like the description. Waste of money and time. Very disappointed.')">
-                    <p><strong>Negative:</strong> "Terrible quality, nothing like the description. Waste of money and time. Very disappointed."</p>
-                </div>
-                
-                <div class="example-item" onclick="setExample('The product is okay. It works as expected but nothing special. Average quality for the price.')">
-                    <p><strong>Neutral:</strong> "The product is okay. It works as expected but nothing special. Average quality for the price."</p>
+                <div class="model-option">
+                    <input type="radio" id="gemini" name="ai_model" value="gemini">
+                    <label for="gemini">💎 Google Gemini</label>
                 </div>
             </div>
-        </div>
-    </div>
+            
+            <div class="button-group">
+                <button type="submit">Analyze Sentiment</button>
+                <button type="button" class="btn-compare" onclick="compareModels()">🔄 Compare All Models</button>
+            </div>
+        </form>
 
-    <div class="footer">
-        <p>&copy; 2024 Amazon Review Sentiment Analysis | Built with Python & Flask | AI-Powered</p>
+        <div class="examples">
+            <h3>💡 Try these examples:</h3>
+            <div class="example" onclick="setExample('This product is amazing! Great quality and fast shipping. Highly recommend!')">
+                <strong>Positive:</strong> "This product is amazing! Great quality and fast shipping. Highly recommend!"
+            </div>
+            <div class="example" onclick="setExample('Terrible quality, waste of money. Very disappointed with this purchase.')">
+                <strong>Negative:</strong> "Terrible quality, waste of money. Very disappointed with this purchase."
+            </div>
+            <div class="example" onclick="setExample('The product is okay. It works as expected but nothing special. Average quality for the price.')">
+                <strong>Neutral:</strong> "The product is okay. It works as expected but nothing special. Average quality for the price."
+            </div>
+        </div>
     </div>
 
     <script>
@@ -290,17 +146,16 @@
             document.getElementById('review_text').value = text;
         }
 
-        function selectModel(modelName) {
-            // Remove selected class from all options
-            document.querySelectorAll('.model-option').forEach(option => {
-                option.classList.remove('selected');
-            });
+        function compareModels() {
+            const reviewText = document.getElementById('review_text').value;
+            if (!reviewText.trim()) {
+                alert('Please enter a review text first.');
+                return;
+            }
             
-            // Add selected class to clicked option
-            document.querySelector(`[onclick="selectModel('${modelName}')"]`).classList.add('selected');
-            
-            // Check the radio button
-            document.getElementById(modelName).checked = true;
+            const form = document.getElementById('analysisForm');
+            form.action = '/compare';
+            form.submit();
         }
     </script>
 </body>
