@@ -1,13 +1,31 @@
-from flask import Flask, render_template, request, jsonify
-import pickle
-import re
-import nltk
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-import os
-from dotenv import load_dotenv
-import warnings
+# Add this to your app.py
 import logging
+import warnings
+from dotenv import load_dotenv
+import os
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+import nltk
+import re
+import pickle
+from flask import Flask, render_template, request, jsonify
+
+
+@app.route('/version')
+def version():
+    return jsonify({
+        'version': '2.0.0',
+        'timestamp': '2025-07-12',
+        'features': [
+            'OpenAI GPT-3.5',
+            'Anthropic Claude',
+            'Google Gemini',
+            'Enhanced Analysis',
+            'Model Comparison'
+        ],
+        'git_commit': 'latest'
+    })
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
