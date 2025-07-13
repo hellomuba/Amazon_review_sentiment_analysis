@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amazon Review Sentiment Analysis</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            color: #333; 
+            text-align: center; 
+            margin-bottom: 30px;
+        }
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            box-sizing: border-box;
+        }
+        button { 
+            background: #007bff; 
+            color: white; 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 16px;
+            width: 48%;
+            margin: 5px 1%;
+            display: inline-block;
+        }
+        button:hover { 
+            background: #0056b3; 
+        }
+        .btn-compare {
+            background: #28a745;
+        }
+        .btn-compare:hover {
+            background: #1e7e34;
+        }
+        .models { 
+            margin: 20px 0; 
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .model-option { 
+            margin: 10px 0; 
+            padding: 10px;
+        }
+        .model-option input {
+            margin-right: 10px;
+        }
+        .model-option label {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .examples {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+        .example {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 3px;
+            cursor: pointer;
+            border-left: 4px solid #007bff;
+        }
+        .example:hover {
+            background: #f0f0f0;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amazon Review Sentiment Analysis</h1>
+        <form id="analysisForm" action="/predict" method="POST">
+            <div>
+                <label for="review_text">Enter your Amazon product review:</label>
+                <textarea id="review_text" name="review_text" placeholder="Enter your Amazon product review here..." required></textarea>
+            </div>
+            
+            <div class="models">
+                <h3>Choose AI Model:</h3>
+                <div class="model-option">
+                    <input type="radio" id="ml_model" name="ai_model" value="ml_model" checked>
+                    <label for="ml_model">🤖 ML Model (Trained Random Forest/Logistic Regression)</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="openai" name="ai_model" value="openai">
+                    <label for="openai">🔥 OpenAI GPT-3.5</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="claude" name="ai_model" value="claude">
+                    <label for="claude">🧠 Anthropic Claude</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="gemini" name="ai_model" value="gemini">
+                    <label for="gemini">💎 Google Gemini</label>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit">Analyze Sentiment</button>
+                <button type="button" class="btn-compare" onclick="compareModels()">🔄 Compare All Models</button>
+            </div>
+        </form>
+
+        <div class="examples">
+            <h3>💡 Try these examples:</h3>
+            <div class="example" onclick="setExample('This product is amazing! Great quality and fast shipping. Highly recommend!')">
+                <strong>Positive:</strong> "This product is amazing! Great quality and fast shipping. Highly recommend!"
+            </div>
+            <div class="example" onclick="setExample('Terrible quality, waste of money. Very disappointed with this purchase.')">
+                <strong>Negative:</strong> "Terrible quality, waste of money. Very disappointed with this purchase."
+            </div>
+            <div class="example" onclick="setExample('The product is okay. It works as expected but nothing special. Average quality for the price.')">
+                <strong>Neutral:</strong> "The product is okay. It works as expected but nothing special. Average quality for the price."
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setExample(text) {
+            document.getElementById('review_text').value = text;
+        }
+
+        function compareModels() {
+            const reviewText = document.getElementById('review_text').value;
+            if (!reviewText.trim()) {
+                alert('Please enter a review text first.');
+                return;
+            }
+            
+            const form = document.getElementById('analysisForm');
+            form.action = '/compare';
+            form.submit();
+        }
+    </script>
+</body>
+</html>

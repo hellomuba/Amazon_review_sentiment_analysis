@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analysis Result</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .result { text-align: center; padding: 20px; margin: 20px 0; border-radius: 10px; }
+        .positive { background: #d4edda; color: #155724; }
+        .negative { background: #f8d7da; color: #721c24; }
+        .neutral { background: #d1ecf1; color: #0c5460; }
+        .error { background: #f8d7da; color: #721c24; padding: 20px; border-radius: 5px; }
+        .review-text { background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis Result</h1>
+        
+        {% if error %}
+            <div class="error">
+                <h3>Error</h3>
+                <p>{{ error }}</p>
+            </div>
+        {% else %}
+            <div class="review-text">
+                <h4>Your Review:</h4>
+                <p>"{{ result.review_text }}"</p>
+            </div>
+            
+            <div class="result {% if result.sentiment.lower() == 'positive' %}positive{% elif result.sentiment.lower() == 'negative' %}negative{% else %}neutral{% endif %}">
+                <h2>{{ result.sentiment|title }}</h2>
+                <p>Confidence: {{ result.confidence }}</p>
+                <p>Model: {{ result.model_used }}</p>
+            </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

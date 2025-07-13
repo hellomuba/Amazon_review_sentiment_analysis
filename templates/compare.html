@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Comparison - Sentiment Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .review-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .review-text {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .model-result {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .model-result:hover {
+            transform: translateY(-5px);
+        }
+
+        .model-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .model-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+
+        .model-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .model-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .sentiment-display {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .sentiment-positive {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .sentiment-negative {
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: white;
+        }
+
+        .sentiment-neutral {
+            background: linear-gradient(45deg, #6c757d, #adb5bd);
+            color: white;
+        }
+
+        .sentiment-display h4 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .confidence-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .summary-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .summary-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .summary-item p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .btn-secondary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        .consensus {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .consensus h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .consensus p {
+            color: #0c5460;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Model Comparison</h1>
+            <p>Compare predictions from different AI models</p>
+        </div>
+
+        {% if error %}
+            <div class="review-section">
+                <div class="error">
+                    <h3>❌ Error</h3>
+                    <p>{{ error }}</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="review-section">
+                <h3>📝 Analyzed Review</h3>
+                <div class="review-text">
+                    <p>"{{ review_text }}"</p>
+                </div>
+            </div>
+
+            <div class="comparison-grid">
+                {% for model_key, result in results.items() %}
+                <div class="model-result">
+                    <div class="model-header">
+                        <div class="model-icon">
+                            {% if model_key == 'ML Model' %}🤖
+                            {% elif model_key == 'OpenAI' %}🔥
+                            {% elif model_key == 'Claude' %}🧠
+                            {% elif model_key == 'Gemini' %}💎
+                            {% endif %}
+                        </div>
+                        <div class="model-info">
+                            <h3>{{ model_key }}</h3>
+                            <p>{{ result.model_name }}</p>
+                        </div>
+                    </div>
+
+                    {% if result.sentiment.startswith('Error') %}
+                        <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; text-align: center;">
+                            <p>{{ result.sentiment }}</p>
+                        </div>
+                    {% else %}
+                        <div class="sentiment-display {% if result.sentiment.lower() == 'positive' %}sentiment-positive{% elif result.sentiment.lower() == 'negative' %}sentiment-negative{% else %}sentiment-neutral{% endif %}">
+                            <h4>
+                                {% if result.sentiment.lower() == 'positive' %}
+                                    😊 {{ result.sentiment|title }}
+                                {% elif result.sentiment.lower() == 'negative' %}
+                                    😞 {{ result.sentiment|title }}
+                                {% else %}
+                                    😐 {{ result.sentiment|title }}
+                                {% endif %}
+                            </h4>
+                            <p>Confidence: {{ "%.2f%%"|format(result.confidence * 100) }}</p>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: {{ (result.confidence * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="summary-section">
+                <h3>📊 Comparison Summary</h3>
+                {% set positive_count = results.values() | selectattr('sentiment', 'equalto', 'positive') | list | length %}
+                {% set negative_count = results.values() | selectattr('sentiment', 'equalto', 'negative') | list | length %}
+                {% set neutral_count = results.values() | selectattr('sentiment', 'equalto', 'neutral') | list | length %}
+                {% set total_models = results|length %}
+
+                <div class="consensus">
+                    <h4>🎯 Model Consensus</h4>
+                    {% if positive_count > negative_count and positive_count > neutral_count %}
+                        <p>Majority of models predict: <strong>POSITIVE</strong> sentiment ({{ positive_count }}/{{ total_models }} models)</p>
+                    {% elif negative_count > positive_count and negative_count > neutral_count %}
+                        <p>Majority of models predict: <strong>NEGATIVE</strong> sentiment ({{ negative_count }}/{{ total_models }} models)</p>
+                    {% elif neutral_count > positive_count and neutral_count > negative_count %}
+                        <p>Majority of models predict: <strong>NEUTRAL</strong> sentiment ({{ neutral_count }}/{{ total_models }} models)</p>
+                    {% else %}
+                        <p>Models show <strong>MIXED</strong> predictions - no clear consensus</p>
+                    {% endif %}
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <h4>{{ positive_count }}</h4>
+                        <p>Positive Predictions</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>{{ negative_count }}</h4>
+                        <p>Negative Predictions</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>{{ neutral_count }}</h4>
+                        <p>Neutral Predictions</p>
+                    </div>
+                    <div class="summary-item">
+                        <h4>{{ total_models }}</h4>
+                        <p>Total Models</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="btn-secondary">🏠 Back to Home</a>
+            <a href="/about" class="btn-secondary">ℹ️ About Project</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 Amazon Review Sentiment Analysis | Built with Python & Flask | AI-Powered | Mubarak Ibrahim</p>
+    </div>
+
+    <script>
+        // Animate confidence bars on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const confidenceFills = document.querySelectorAll('.confidence-fill');
+            confidenceFills.forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

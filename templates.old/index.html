@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amazon Review Sentiment Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        textarea { width: 100%; height: 120px; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .models { margin: 20px 0; }
+        .model-option { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Amazon Review Sentiment Analysis</h1>
+        <form action="/predict" method="POST">
+            <textarea name="review_text" placeholder="Enter your Amazon product review here..." required></textarea>
+            <div class="models">
+                <div class="model-option">
+                    <input type="radio" id="ml_model" name="ai_model" value="ml_model" checked>
+                    <label for="ml_model">ML Model (Trained)</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="openai" name="ai_model" value="openai">
+                    <label for="openai">OpenAI GPT-3.5</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="claude" name="ai_model" value="claude">
+                    <label for="claude">Claude</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="gemini" name="ai_model" value="gemini">
+                    <label for="gemini">Google Gemini</label>
+                </div>
+            </div>
+            <button type="submit">Analyze Sentiment</button>
+        </form>
+    </div>
+</body>
+</html>
